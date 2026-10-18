@@ -1,0 +1,9 @@
+{
+  "uuid": "github-pulse@joaocarvalhosm.github.io",
+  "name": "GitHub Pulse",
+  "description": "Your GitHub activity in the top bar: the last 7 days of contributions, the yearly contribution grid, streaks, totals, languages and your most recently pushed repositories. Needs a read-only GitHub token, stored in the GNOME keyring.",
+  "shell-version": ["50"],
+  "url": "https://github.com/joaocarvalhosm/github-pulse",
+  "settings-schema": "org.gnome.shell.extensions.github-pulse",
+  "version-name": "0.1.0"
+}

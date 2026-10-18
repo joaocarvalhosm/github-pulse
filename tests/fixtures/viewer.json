@@ -1,0 +1,41 @@
+{
+  "login": "octo-tester",
+  "name": "Octo Tester",
+  "url": "https://github.com/octo-tester",
+  "avatarUrl": "https://avatars.githubusercontent.com/u/1?s=96",
+  "contributionsCollection": {
+    "totalCommitContributions": 40,
+    "totalPullRequestContributions": 5,
+    "totalIssueContributions": 3,
+    "totalPullRequestReviewContributions": 2,
+    "restrictedContributionsCount": 7,
+    "contributionCalendar": {
+      "totalContributions": 57,
+      "weeks": [
+        {"contributionDays": [
+          {"date": "2026-10-11", "contributionCount": 0, "contributionLevel": "NONE"},
+          {"date": "2026-10-12", "contributionCount": 3, "contributionLevel": "SECOND_QUARTILE"}
+        ]},
+        {"contributionDays": [
+          {"date": "2026-10-13", "contributionCount": 9, "contributionLevel": "FOURTH_QUARTILE"}
+        ]}
+      ]
+    },
+    "commitContributionsByRepository": [
+      {"repository": {"nameWithOwner": "octo-tester/a", "url": "https://github.com/octo-tester/a",
+                      "primaryLanguage": {"name": "Python", "color": "#3572A5"}},
+       "contributions": {"totalCount": 30}},
+      {"repository": {"nameWithOwner": "octo-tester/b", "url": "https://github.com/octo-tester/b",
+                      "primaryLanguage": null},
+       "contributions": {"totalCount": 10}}
+    ]
+  },
+  "repositories": {
+    "nodes": [
+      {"name": "a", "url": "https://github.com/octo-tester/a", "isPrivate": true, "isFork": false,
+       "pushedAt": "2026-10-13T12:00:00Z", "stargazerCount": 4, "forkCount": 1,
+       "primaryLanguage": {"name": "Python", "color": "#3572A5"},
+       "issues": {"totalCount": 2}, "pullRequests": {"totalCount": 1}}
+    ]
+  }
+}

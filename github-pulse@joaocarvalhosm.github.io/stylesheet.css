@@ -1,0 +1,176 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+
+/* Panel: the last 7 days, square like on github.com */
+.github-pulse-strip {
+  spacing: 3px;
+}
+
+.github-pulse-strip-cell {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+/* Levels 0-4 on the panel: GitHub's greens, and a neutral grey for empty
+   days that shows on light and dark bars. The menu grid draws its own
+   colours, see lib/palette.js. */
+.github-pulse-l0 { background-color: rgba(127, 127, 127, 0.4); }
+.github-pulse-l1 { background-color: #0e4429; }
+.github-pulse-l2 { background-color: #006d32; }
+.github-pulse-l3 { background-color: #26a641; }
+.github-pulse-l4 { background-color: #39d353; }
+
+/* Secondary text, readable on light and dark styles */
+.github-pulse-dim,
+.github-pulse-subtitle,
+.github-pulse-tile-caption,
+.github-pulse-hover,
+.github-pulse-legend-text,
+.github-pulse-heading {
+  color: rgba(127, 127, 127, 1);
+}
+
+/* Header */
+.github-pulse-header {
+  spacing: 12px;
+  padding: 2px 0;
+}
+
+.github-pulse-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background-size: cover;
+  background-color: rgba(127, 127, 127, 0.2);
+}
+
+.github-pulse-name {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.github-pulse-subtitle {
+  font-size: 0.9em;
+}
+
+.github-pulse-buttons {
+  spacing: 6px;
+}
+
+.github-pulse-icon-button {
+  padding: 8px;
+}
+
+.github-pulse-icon-button StIcon {
+  icon-size: 16px;
+}
+
+/* Status message */
+.github-pulse-message {
+  border-radius: 12px;
+  background-color: rgba(127, 127, 127, 0.1);
+}
+
+/* Tiles */
+.github-pulse-tiles {
+  spacing: 8px;
+}
+
+.github-pulse-tile {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background-color: rgba(127, 127, 127, 0.1);
+  spacing: 2px;
+}
+
+.github-pulse-tile-value {
+  font-size: 1.3em;
+  font-weight: bold;
+  font-feature-settings: "tnum";
+}
+
+.github-pulse-tile-caption {
+  font-size: 0.85em;
+}
+
+/* Yearly grid */
+.github-pulse-grid {
+  spacing: 8px;
+}
+
+.github-pulse-heatmap {
+  font-size: 0.75em;
+}
+
+.github-pulse-hover {
+  font-size: 0.9em;
+}
+
+.github-pulse-legend {
+  spacing: 6px;
+}
+
+.github-pulse-legend-text {
+  font-size: 0.8em;
+}
+
+/* Sections */
+.github-pulse-heading {
+  font-weight: bold;
+  font-size: 0.9em;
+  padding-top: 10px;
+}
+
+.github-pulse-summary {
+  spacing: 8px;
+}
+
+.github-pulse-language-bar {
+  height: 8px;
+  spacing: 2px;
+  margin-top: 4px;
+}
+
+.github-pulse-language-segment.first {
+  border-radius: 4px 0 0 4px;
+}
+
+.github-pulse-language-segment.last {
+  border-radius: 0 4px 4px 0;
+}
+
+.github-pulse-language-segment.first.last {
+  border-radius: 4px;
+}
+
+.github-pulse-language-legend {
+  spacing: 16px;
+}
+
+.github-pulse-language-entry {
+  spacing: 6px;
+  font-size: 0.9em;
+}
+
+.github-pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+/* Repositories */
+.github-pulse-repo {
+  spacing: 10px;
+}
+
+.github-pulse-repo-name {
+  font-weight: bold;
+}
+
+.github-pulse-repo-icon {
+  icon-size: 12px;
+}
+
+.github-pulse-repo .github-pulse-dim {
+  font-size: 0.9em;
+}

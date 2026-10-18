@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.github-pulse"
+          path="/org/gnome/shell/extensions/github-pulse/">
+    <key name="refresh-minutes" type="u">
+      <range min="5" max="240"/>
+      <default>15</default>
+      <summary>Minutes between updates</summary>
+    </key>
+    <key name="repo-count" type="u">
+      <range min="1" max="15"/>
+      <default>6</default>
+      <summary>How many recently pushed repositories the menu lists</summary>
+    </key>
+    <key name="token-revision" type="u">
+      <default>0</default>
+      <summary>Bumped by the preferences when the token changes</summary>
+      <description>The token itself is kept in the keyring, never here.</description>
+    </key>
+  </schema>
+</schemalist>
