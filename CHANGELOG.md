@@ -2,6 +2,11 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+## [Não lançado]
+### Documentação
+- README em inglês (`README.md`) e em português (`README.pt-BR.md`), com um
+  seletor de idioma no topo de cada um.
+
 ## [0.1.0] - 2026-10-17
 ### Adicionado
 - Últimos 7 dias de contribuições na barra, em quadrados como no GitHub.

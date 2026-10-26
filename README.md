@@ -1,47 +1,51 @@
 # GitHub Pulse
 
-**Sua atividade no GitHub na barra do GNOME.**
+**English** | [Português](README.pt-BR.md)
 
-A barra mostra os últimos 7 dias em quadradinhos, como no gráfico de
-contribuições do GitHub. Clicando, aparecem a grade do ano, as sequências, o
-resumo do ano e os seus repositórios mais recentes.
+**Your GitHub activity in the GNOME top bar.**
 
-![Menu no estilo escuro](docs/screenshots/menu-escuro.png)
+The top bar shows your last 7 days as small squares, like GitHub's
+contribution graph. Click it to see the yearly grid, your streaks, a summary
+of the year and your most recently pushed repositories.
 
-| Estilo claro | Na barra |
+![Menu in the dark style](docs/screenshots/menu-escuro.png)
+
+| Light style | In the top bar |
 |---|---|
-| ![Menu no estilo claro](docs/screenshots/menu-claro.png) | ![Últimos 7 dias na barra](docs/screenshots/barra.png) |
+| ![Menu in the light style](docs/screenshots/menu-claro.png) | ![Last 7 days in the top bar](docs/screenshots/barra.png) |
 
-*Capturas feitas com uma conta de demonstração.*
+*Screenshots taken with a demo account.*
 
 | | |
 |---|---|
 | **GNOME Shell** | 50 |
-| **Versão** | 0.1.0, veja o [CHANGELOG](CHANGELOG.md) |
-| **Licença** | GPL-3.0-or-later |
+| **Version** | 0.1.0, see the [CHANGELOG](CHANGELOG.md) (in Portuguese) |
+| **License** | GPL-3.0-or-later |
+| **Interface language** | Brazilian Portuguese (translations are planned) |
 
-## O que mostra
+## What it shows
 
-- **Na barra:** os últimos 7 dias, o mais antigo à esquerda e hoje à direita,
-  na escala de verdes do GitHub.
-- **No menu:**
-  - **cabeçalho:** foto, nome, quando os dados foram atualizados e três
-    botões: atualizar, abrir o perfil no GitHub e configurações;
-  - **quatro números:** contribuições no último ano, sequência atual,
-    recorde e contribuições de hoje;
-  - **grade do ano:** semanas em colunas (domingo em cima), meses no topo e
-    legenda "Menos … Mais". Passe o mouse para ver o dia e a quantidade;
-  - **resumo do ano:** commits, pull requests, issues e revisões; o dia da
-    semana em que você mais contribui; e as linguagens dos repositórios onde
-    fez commits;
-  - **repositórios recentes:** os que receberam push por último, com a cor
-    da linguagem, um cadeado se forem privados, estrelas, issues e PRs
-    abertos e quando foi o último push. Clicando, abre no navegador.
-- **Sem internet:** continua mostrando os últimos dados salvos e avisa o
-  motivo.
-- **Estilos claro e escuro:** as cores acompanham o estilo do GNOME.
+- **In the top bar:** the last 7 days, oldest on the left and today on the
+  right, in GitHub's shades of green.
+- **In the menu:**
+  - **header:** your picture, your name, when the data was last updated, and
+    three buttons: refresh, open your GitHub profile, and settings;
+  - **four numbers:** contributions in the last year, current streak,
+    longest streak and today's contributions;
+  - **yearly grid:** one column per week (Sunday on top), month names on top
+    and a "Less … More" legend. Hover over a day to see its date and count;
+  - **year summary:** commits, pull requests, issues and reviews; the day of
+    the week you contribute the most; and the languages of the repositories
+    you committed to;
+  - **recent repositories:** the ones you pushed to most recently, with the
+    language colour, a lock if they are private, stars, open issues and pull
+    requests, and the time of the last push. Click one to open it in your
+    browser.
+- **Offline:** it keeps showing the last saved data and tells you why it
+  could not refresh.
+- **Light and dark styles:** the colours follow the GNOME style.
 
-## Instalação
+## Installation
 
 ```bash
 git clone https://github.com/joaocarvalhosm/github-pulse.git
@@ -49,91 +53,94 @@ cd github-pulse
 make install
 ```
 
-Saia e entre de novo na sessão. Se a extensão não aparecer, ative com
+Log out and back in. If the extension does not show up, enable it with
 `gnome-extensions enable github-pulse@joaocarvalhosm.github.io`.
 
-## Conectar a conta
+## Connecting your account
 
-1. Crie um token **fine-grained** em
+1. Create a **fine-grained** token at
    <https://github.com/settings/personal-access-tokens/new>:
-   - **Expiration:** um prazo, por exemplo 90 dias;
-   - **Repository access:** *All repositories*, ou só os que você quer ver;
-   - **Permissions:** não adicione nenhuma. O padrão (*Metadata: read-only*)
-     basta.
-2. No menu, clique no botão de configurações (⚙), cole o token em **Novo
-   token** e confirme.
-3. A extensão confere o token no GitHub antes de salvar e mostra
-   "Conectado como @você".
+   - **Expiration:** pick an end date, for example 90 days;
+   - **Repository access:** *All repositories*, or only the ones you want to
+     see;
+   - **Permissions:** do not add any. The default (*Metadata: read-only*) is
+     enough.
+2. In the menu, click the settings button (⚙), paste the token into
+   **Novo token** ("New token") and confirm.
+3. The extension checks the token with GitHub before saving it, and then
+   shows "Conectado como @you" ("Connected as @you").
 
-Quando o token expirar, o menu avisa. Crie outro e cole no mesmo lugar.
+When the token expires, the menu tells you. Create a new one and paste it in
+the same place.
 
-## Configurações
+## Settings
 
-| Opção | Padrão | Faixa |
+| Option | Default | Range |
 |---|---|---|
-| Atualizar a cada | 15 min | 5 a 240 min |
-| Repositórios recentes no menu | 6 | 1 a 15 |
+| **Atualizar a cada** (refresh every) | 15 min | 5 to 240 min |
+| **Repositórios recentes no menu** (recent repositories in the menu) | 6 | 1 to 15 |
 
-Além do intervalo, a extensão atualiza ao abrir o menu se os dados tiverem
-mais de 5 minutos, e na hora em que o token muda.
+Besides the interval, the extension refreshes when you open the menu and the
+data is more than 5 minutes old, and right after the token changes.
 
-## Segurança e privacidade
+## Security and privacy
 
-O que a extensão garante, e como:
+What the extension guarantees, and how:
 
-| Garantia | Como |
+| Guarantee | How |
 |---|---|
-| O token fica só no **chaveiro do GNOME** | Guardado com libsecret, criptografado e liberado com a sua sessão. Não vai para o GSettings, para arquivos, para o log nem para mensagens de erro, e não é mostrado de novo depois de salvo. |
-| O token só vai para `api.github.com` | É enviado apenas na consulta ao endereço fixo da API, por HTTPS, e **redirecionamentos não são seguidos**, então ele não é repassado a outro servidor. |
-| A extensão **só lê** | A consulta GraphQL é só de leitura (há um teste que garante que não existe `mutation`). Com um token sem permissões de escrita, nada na sua conta pode ser alterado, nem por engano. |
-| Nada de fora entra no CSS ou no navegador | Cores de linguagens só passam se forem `#rrggbb`. Links só abrem se forem `https://github.com/…`, sem usuário nem porta. A foto só vem de `https://avatars.githubusercontent.com`, até 1 MiB e apenas PNG, JPEG, GIF ou WebP. |
-| O cache é só seu | `~/.cache/github-pulse/` tem a pasta com permissão `700` e os arquivos com `600`, porque podem conter nomes de repositórios privados. Remover o token apaga o cache. |
-| Um cache estragado não quebra nada | O arquivo é validado ao ser lido. Se estiver em outro formato ou danificado, é ignorado e os dados são buscados de novo. A foto é sempre o arquivo da própria extensão, e não um caminho vindo do cache. |
-| Os erros do GitHub não poluem a tela | As mensagens são curtas (até 200 caracteres) e nunca incluem o token. |
-| Sem telemetria | Nenhum dado vai para outro lugar além do GitHub. |
-| Nada na tela de bloqueio | A extensão é desligada quando a tela é bloqueada, como o GNOME faz por padrão. |
+| The token is kept only in the **GNOME keyring** | It is stored with libsecret, encrypted, and unlocked with your session. It never goes to GSettings, to files, to the log or to error messages, and it is never shown again after you save it. |
+| The token is only sent to `api.github.com` | It is sent only with the request to the fixed API address, over HTTPS, and **redirects are not followed**, so it is never passed on to another server. |
+| The extension **only reads** | The GraphQL query is read-only (a test makes sure it has no `mutation`). With a token that has no write permissions, nothing in your account can be changed, not even by mistake. |
+| Nothing from outside gets into CSS or the browser | Language colours are only used if they are `#rrggbb`. Links only open if they are `https://github.com/…` pages, with no user name and no port. Your picture only comes from `https://avatars.githubusercontent.com`, up to 1 MiB, and only as PNG, JPEG, GIF or WebP. |
+| The cache is yours only | In `~/.cache/github-pulse/`, the folder has mode `700` and the files `600`, because they may contain the names of private repositories. Removing the token deletes the cache. |
+| A damaged cache breaks nothing | The file is checked when it is read. If it has another format or is damaged, it is ignored and the data is fetched again. The picture is always the extension's own file, never a path taken from the cache. |
+| GitHub errors do not flood the screen | Messages are kept short (up to 200 characters) and never include the token. |
+| No telemetry | No data goes anywhere other than GitHub. |
+| Nothing on the lock screen | The extension is turned off while the screen is locked, as GNOME does by default. |
 
-Para relatar uma falha de segurança, veja o [SECURITY.md](SECURITY.md).
+To report a security issue, see [SECURITY.md](SECURITY.md) (in Portuguese).
 
-## Solução de problemas
+## Troubleshooting
 
-- **"O GitHub recusou o token":** o token expirou ou foi revogado. Crie
-  outro e cole nas configurações.
-- **"Limite de uso da API":** espere alguns minutos. A extensão faz uma
-  única consulta por atualização.
-- **O menu não aparece ou outras extensões sumiram:** o GNOME liga as
-  extensões uma de cada vez. Se uma travar, as seguintes (a dock, por
-  exemplo) não carregam. Desative esta com
-  `gnome-extensions disable github-pulse@joaocarvalhosm.github.io`, saia e
-  entre de novo, e abra uma issue com a saída de
+- **"O GitHub recusou o token"** ("GitHub refused the token"): the token
+  expired or was revoked. Create a new one and paste it in the settings.
+- **"Limite de uso da API"** ("API rate limit"): wait a few minutes. The
+  extension makes a single request per refresh.
+- **The menu does not show up, or other extensions disappeared:** GNOME
+  turns extensions on one at a time. If one gets stuck, the ones after it
+  (the dock, for example) do not load. Turn this one off with
+  `gnome-extensions disable github-pulse@joaocarvalhosm.github.io`, log out
+  and back in, and open an issue with the output of
   `journalctl --user -b -o cat | grep -iE "github-pulse|JS ERROR|uncatchable"`.
 
-## Desenvolvimento
+## Development
 
 ```bash
-make test    # testes unitários (gjs, sem precisar do GNOME Shell)
-make smoke   # liga e desliga a extensão num GNOME Shell sem tela, isolado
-make check   # os dois
-make pack    # gera dist/…shell-extension.zip só com o necessário
-make install # instala o zip para o seu usuário
+make test    # unit tests (gjs, no GNOME Shell needed)
+make smoke   # turns the extension on and off in an isolated headless GNOME Shell
+make check   # both
+make pack    # builds dist/…shell-extension.zip with only what is needed
+make install # installs the zip for your user
 ```
 
-- **Testes unitários** (`tests/*.test.js`): cálculos, textos, geometria da
-  grade, cores, conversão e validação da resposta, erros HTTP, URLs, formato
-  do token e cache (numa pasta temporária, nunca no seu `~/.cache`).
-- **Smoke test** (`tests/smoke.sh`): roda um GNOME Shell `--headless` numa
-  sessão D-Bus própria e com um `HOME` temporário, sem acesso ao seu
-  chaveiro, às suas configurações nem ao seu cache. Ele confere que a
-  extensão fica ativa, desliga e liga de novo sem erros de JavaScript. Pega
-  o tipo de erro que só aparece dentro do Shell, como o que travou a 0.1.0
-  em desenvolvimento.
-- O pacote leva só os arquivos da extensão, sem testes nem scripts, como pede
-  a revisão do extensions.gnome.org.
-- Como cada parte funciona: [docs/COMO-FUNCIONA.md](docs/COMO-FUNCIONA.md).
+- **Unit tests** (`tests/*.test.js`): calculations, texts, grid geometry,
+  colours, parsing and checking the API response, HTTP errors, URLs, token
+  format and the cache (in a temporary folder, never in your `~/.cache`).
+- **Smoke test** (`tests/smoke.sh`): runs a `--headless` GNOME Shell in its
+  own D-Bus session with a temporary `HOME`, so it has no access to your
+  keyring, settings or cache. It checks that the extension becomes active,
+  turns off and turns on again without JavaScript errors. It catches the
+  kind of error that only shows up inside the Shell, like the one that
+  froze 0.1.0 during development.
+- The package contains only the extension files, without tests or scripts,
+  as the extensions.gnome.org review requires.
+- How each part works: [docs/COMO-FUNCIONA.md](docs/COMO-FUNCIONA.md) (in
+  Portuguese).
 
-## Créditos
+## Credits
 
-Este é um projeto independente, sem vínculo com o GitHub. "GitHub" é uma
-marca da GitHub, Inc. e aparece aqui só para dizer com qual serviço a
-extensão funciona. O ícone é original, e a escala de verdes reproduz as
-cores do gráfico de contribuições.
+This is an independent project, not affiliated with GitHub. "GitHub" is a
+trademark of GitHub, Inc. and is used here only to say which service the
+extension works with. The icon is original, and the shades of green match
+the colours of the contribution graph.
