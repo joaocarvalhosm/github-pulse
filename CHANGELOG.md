@@ -6,6 +6,8 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 ### Documentação
 - README em inglês (`README.md`) e em português (`README.pt-BR.md`), com um
   seletor de idioma no topo de cada um.
+- Guia do código em inglês (`docs/HOW-IT-WORKS.md`) e em português
+  (`docs/HOW-IT-WORKS.pt-BR.md`).
 
 ## [0.1.0] - 2026-10-17
 ### Adicionado

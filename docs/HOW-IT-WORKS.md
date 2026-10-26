@@ -1,145 +1,147 @@
-# Como funciona
+# How it works
 
-Um guia do código, para quem vai mantê-lo ou revisá-lo.
+**English** | [Português](HOW-IT-WORKS.pt-BR.md)
+
+A guide to the code, for whoever maintains or reviews it.
 
 ```
 github-pulse@joaocarvalhosm.github.io/
-├── extension.js     liga tudo: timer, busca, cache e o indicador
-├── prefs.js         janela de configurações (token e intervalo)
-├── stylesheet.css   aparência do menu e da barra
-├── lib/             lógica sem interface (testada com make test)
-│   ├── api.js       consulta GraphQL, erros HTTP, conversão e validação
-│   ├── token.js     token no chaveiro (libsecret)
-│   ├── cache.js     última resposta em ~/.cache/github-pulse/
-│   ├── urls.js      validação dos endereços vindos da API
-│   ├── stats.js     sequências, médias, últimos dias, "há X min"
-│   ├── format.js    textos do menu em português
-│   ├── grid.js      geometria da grade do ano e qual dia está sob o mouse
-│   └── palette.js   cores dos níveis no estilo claro e escuro
-└── ui/              widgets do GNOME Shell
-    ├── indicator.js botão da barra e o menu
-    └── heatmap.js   grade do ano e legenda, desenhadas com Cairo
+├── extension.js     wires everything: timer, fetching, cache and the indicator
+├── prefs.js         settings window (token and interval)
+├── stylesheet.css   look of the menu and the top bar
+├── lib/             logic without UI (tested with make test)
+│   ├── api.js       GraphQL query, HTTP errors, parsing and validation
+│   ├── token.js     token in the keyring (libsecret)
+│   ├── cache.js     last response in ~/.cache/github-pulse/
+│   ├── urls.js      checks the addresses that come from the API
+│   ├── stats.js     streaks, averages, last days, "X min ago"
+│   ├── format.js    menu texts in Portuguese
+│   ├── grid.js      geometry of the yearly grid and which day is under the pointer
+│   └── palette.js   level colours for the light and dark styles
+└── ui/              GNOME Shell widgets
+    ├── indicator.js top-bar button and the menu
+    └── heatmap.js   yearly grid and legend, drawn with Cairo
 tests/
-├── run.js           executa todos os *.test.js
+├── run.js           runs every *.test.js
 ├── harness.js       test(), eq(), throws(), fixture()
-├── *.test.js        um arquivo por módulo de lib/
-├── smoke.sh         liga e desliga a extensão num GNOME Shell sem tela
-└── fixtures/        resposta de exemplo da API
+├── *.test.js        one file per lib/ module
+├── smoke.sh         turns the extension on and off in a headless GNOME Shell
+└── fixtures/        sample API response
 ```
 
-A regra é: **o que pode ser testado sem o GNOME Shell fica em `lib/`**, e
-`ui/` só monta widgets com o que `lib/` calcula.
+The rule is: **whatever can be tested without GNOME Shell lives in `lib/`**,
+and `ui/` only builds widgets from what `lib/` computes.
 
-## Fluxo de uma atualização
+## How a refresh works
 
-1. `extension.js` lê o token do chaveiro (`lookupToken`). Sem token, o menu
-   pede para conectar a conta e o cache é apagado.
-2. `GitHubClient.fetchPulse` faz **uma** requisição `POST` para
-   `https://api.github.com/graphql` com a consulta `QUERY`. Ela traz o
-   calendário do último ano, os totais, as contribuições por repositório e
-   os repositórios com push mais recente.
-3. `errorForStatus` transforma o status HTTP num erro com tipo, e
-   `viewerFromResponse` trata os erros do GraphQL.
-4. `parseViewer` transforma a resposta num objeto simples (`pulse`, com
-   `version`), que é o único formato que a interface conhece.
-5. A foto é baixada só quando a URL muda, e só de
+1. `extension.js` reads the token from the keyring (`lookupToken`). Without
+   a token, the menu asks you to connect your account and the cache is
+   deleted.
+2. `GitHubClient.fetchPulse` makes **one** `POST` request to
+   `https://api.github.com/graphql` with the `QUERY` query. It returns the
+   calendar of the last year, the totals, the contributions per repository
+   and the most recently pushed repositories.
+3. `errorForStatus` turns the HTTP status into an error with a kind, and
+   `viewerFromResponse` handles GraphQL errors.
+4. `parseViewer` turns the response into a plain object (`pulse`, with a
+   `version`), which is the only format the UI knows.
+5. The picture is downloaded only when its URL changes, and only from
    `avatars.githubusercontent.com`.
-6. O `pulse` vai para o cache e para `PulseIndicator.update()`.
+6. The `pulse` goes to the cache and to `PulseIndicator.update()`.
 
-Quando algo falha, o último `pulse` continua na tela e o menu explica o
-motivo. O tipo do erro (`GitHubError.kind`) decide o ícone e a ação do
-aviso:
+When something fails, the last `pulse` stays on screen and the menu explains
+why. The error kind (`GitHubError.kind`) decides the icon and what clicking
+the notice does:
 
-| `kind` | Causa | Clicar no aviso |
+| `kind` | Cause | Clicking the notice |
 |---|---|---|
-| `auth` | token recusado, sem permissão ou expirado | abre as configurações |
-| `rate` | limite de uso da API | tenta de novo |
-| `network` | sem conexão | tenta de novo |
-| `api` | resposta inesperada ou redirecionamento | tenta de novo |
+| `auth` | token refused, missing permission or expired | opens the settings |
+| `rate` | API rate limit | tries again |
+| `network` | no connection | tries again |
+| `api` | unexpected response or a redirect | tries again |
 
-## Quando atualiza
+## When it refreshes
 
-- Ao ativar a extensão: primeiro mostra o cache, depois busca.
-- A cada `refresh-minutes` (padrão 15).
-- Ao abrir o menu, se os dados tiverem mais de 5 min.
-- Quando as configurações mudam o token: `prefs.js` incrementa
-  `token-revision`, e a extensão reage a essa mudança. O token em si nunca
-  passa pelo GSettings.
+- When the extension is enabled: it shows the cache first, then fetches.
+- Every `refresh-minutes` (15 by default).
+- When the menu opens, if the data is more than 5 minutes old.
+- When the settings change the token: `prefs.js` increments
+  `token-revision`, and the extension reacts to that change. The token
+  itself never goes through GSettings.
 
-Só uma busca roda por vez (`_refreshing`). `disable()` cancela a busca em
-andamento pelo `Gio.Cancellable`, remove o timer, desconecta os sinais e
-destrói o indicador. Depois de cada `await`, o código confere se foi
-cancelado antes de mexer na interface.
+Only one fetch runs at a time (`_refreshing`). `disable()` cancels the
+running fetch through the `Gio.Cancellable`, removes the timer, disconnects
+the signals and destroys the indicator. After every `await`, the code checks
+whether it was cancelled before touching the UI.
 
-## O menu (`ui/indicator.js`)
+## The menu (`ui/indicator.js`)
 
-De cima para baixo: cabeçalho (foto, nome, atualização e botões), aviso
-(só quando falta algo ou algo falhou), quatro números, grade do ano, resumo
-do ano e repositórios recentes. O cabeçalho e o aviso ficam fora de
-`this._data`, que some inteiro quando não há dados.
+From top to bottom: header (picture, name, last update and buttons), notice
+(only when something is missing or failed), four numbers, yearly grid, year
+summary and recent repositories. The header and the notice live outside
+`this._data`, which is hidden as a whole when there is no data.
 
-Os botões usam a classe `icon-button` do próprio Shell, para seguir o
-visual do GNOME. As cores secundárias usam cinza com transparência, que
-funciona no estilo claro e no escuro.
+The buttons use the Shell's own `icon-button` class, to match the GNOME
+look. Secondary text uses a translucent grey, which works on both the light
+and the dark style.
 
-> **Cuidado ao guardar widgets em outros widgets.** `column.name = label`
-> parece inofensivo, mas `name` já é uma propriedade de todo
-> `Clutter.Actor` e só aceita texto. Isso derrubou a ativação com
-> "Promise callback terminated with uncatchable exception" e travou as
-> extensões seguintes. Use nomes que não existam no Clutter/St, como
-> `valueLabel` e `dayLabel`. O `make smoke` pega esse tipo de erro.
+> **Be careful when storing widgets on other widgets.**
+> `column.name = label` looks harmless, but `name` is already a property of
+> every `Clutter.Actor` and only accepts text. It broke enabling with
+> "Promise callback terminated with uncatchable exception" and blocked the
+> extensions after it. Use names that do not exist in Clutter/St, such as
+> `valueLabel` and `dayLabel`. `make smoke` catches this kind of error.
 
-## Grade do ano (`lib/grid.js` e `ui/heatmap.js`)
+## Yearly grid (`lib/grid.js` and `ui/heatmap.js`)
 
-São cerca de 370 quadrados de 10 px com 3 px de espaço, como no GitHub,
-desenhados num único `St.DrawingArea` com Cairo, o que é mais leve que um
-widget por dia.
+About 370 squares of 10 px with 3 px gaps, as on GitHub, drawn on a single
+`St.DrawingArea` with Cairo, which is lighter than one widget per day.
 
-- `layoutGrid(days)` calcula a posição de cada dia: a coluna é a semana e a
-  linha é o dia da semana (domingo em cima). Calcula também onde vão os
-  nomes dos meses (um mês com poucos dias no início é omitido para não
-  encostar no seguinte) e "Seg", "Qua" e "Sex" à esquerda.
-- `cellAt(layout, x, y)` converte a posição do mouse no dia, ou `-1`.
-- `heatmap.js` só desenha: os textos com PangoCairo na fonte do tema, e os
-  quadrados com as cores de `palette.js`.
+- `layoutGrid(days)` computes where each day goes: the column is the week
+  and the row is the day of the week (Sunday on top). It also computes where
+  the month names go (a month with only a few days at the start is left out
+  so it does not run into the next one) and "Seg", "Qua" and "Sex" (Mon,
+  Wed, Fri) on the left.
+- `cellAt(layout, x, y)` turns the pointer position into the day, or `-1`.
+- `heatmap.js` only draws: the texts with PangoCairo in the theme font, and
+  the squares with the colours from `palette.js`.
 
-## Cores (`lib/palette.js`)
+## Colours (`lib/palette.js`)
 
-Os níveis 1 a 4 usam as escalas de verde do próprio GitHub, uma para o
-estilo escuro e outra para o claro. A escolha vem da cor do texto do tema:
-texto claro significa estilo escuro. O nível 0 é a cor do texto com pouca
-opacidade, então combina com qualquer fundo. Na barra, as cores vêm do
-`stylesheet.css` (classes `github-pulse-l0` a `l4`).
+Levels 1 to 4 use GitHub's own shades of green, one scale for the dark style
+and one for the light style. The choice comes from the theme's text colour:
+light text means a dark style. Level 0 is the text colour at low opacity, so
+it suits any background. In the top bar, the colours come from
+`stylesheet.css` (classes `github-pulse-l0` to `l4`).
 
-## Cálculos (`lib/stats.js`)
+## Calculations (`lib/stats.js`)
 
-- **Sequência atual:** dias seguidos com contribuição até hoje. Um dia de
-  hoje ainda vazio não quebra a sequência, que é contada a partir de ontem.
-- **Recorde:** a maior sequência no calendário. Dias que faltam contam como
-  interrupção.
-- **Dia mais ativo:** a maior **média** por dia da semana, para não
-  favorecer o dia que aparece mais vezes no período.
-- **Linguagens:** a linguagem principal de cada repositório onde você fez
-  commits, com peso pelo número de commits.
+- **Current streak:** days in a row with contributions up to today. An empty
+  today does not break the streak yet; it is then counted from yesterday.
+- **Longest streak:** the longest run in the calendar. Missing days count as
+  a break.
+- **Busiest day:** the highest **average** per day of the week, so the day
+  that happens to appear more often in the period is not favoured.
+- **Languages:** the main language of each repository you committed to,
+  weighted by the number of commits.
 
-## Segurança
+## Security
 
-- **Token:** só no chaveiro (`lib/token.js`). A janela de configurações
-  confere o formato (`github_pat_…` ou `ghp_…`, sem espaços nem quebras de
-  linha, o que impede injetar cabeçalhos HTTP) e testa o token no GitHub
-  **antes** de salvar.
-- **Requisições:** o token só vai para o endereço fixo da API, com
-  `Soup.MessageFlags.NO_REDIRECT`. Um redirecionamento vira erro `api` em
-  vez de levar o token para outro lugar. O download da foto também não
-  segue redirecionamentos, não leva o token, aceita só imagens até 1 MiB e
-  grava com permissão `600`.
-- **Endereços:** `lib/urls.js` aceita apenas HTTPS, no host exato, sem
-  usuário e sem porta. Assim, um link malformado na resposta não abre outro
-  site nem baixa nada de fora.
-- **CSS:** dados da API só entram em estilos depois de `safeColor`, que
-  aceita apenas `#rrggbb`. Os textos vão para `St.Label` como texto puro,
-  sem markup.
-- **Cache:** criado com `Gio.FileCreateFlags.PRIVATE`, com o modo reforçado
-  para `600`, porque guarda nomes de repositórios privados. Na leitura,
-  `isValidPulse` confere o formato e a versão, e o caminho da foto é
-  recalculado em vez de vir do arquivo.
+- **Token:** only in the keyring (`lib/token.js`). The settings window
+  checks the format (`github_pat_…` or `ghp_…`, with no spaces or line
+  breaks, which prevents HTTP header injection) and tests the token with
+  GitHub **before** saving it.
+- **Requests:** the token is only sent to the fixed API address, with
+  `Soup.MessageFlags.NO_REDIRECT`. A redirect becomes an `api` error instead
+  of taking the token somewhere else. The picture download does not follow
+  redirects either, does not carry the token, accepts only images up to
+  1 MiB and is saved with mode `600`.
+- **Addresses:** `lib/urls.js` accepts only HTTPS, on the exact host, with
+  no user name and no port. A malformed link in the response cannot open
+  another site or download anything from elsewhere.
+- **CSS:** API data only gets into styles through `safeColor`, which accepts
+  only `#rrggbb`. Texts go into `St.Label` as plain text, without markup.
+- **Cache:** created with `Gio.FileCreateFlags.PRIVATE`, with the mode
+  forced to `600`, because it holds the names of private repositories. On
+  reading, `isValidPulse` checks the format and the version, and the picture
+  path is recomputed instead of being taken from the file.

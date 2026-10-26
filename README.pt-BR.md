@@ -132,7 +132,7 @@ make install # instala o zip para o seu usuário
   0.1.0 durante o desenvolvimento.
 - O pacote leva só os arquivos da extensão, sem testes nem scripts, como pede
   a revisão do extensions.gnome.org.
-- Como cada parte funciona: [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md).
+- Como cada parte funciona: [docs/HOW-IT-WORKS.pt-BR.md](docs/HOW-IT-WORKS.pt-BR.md).
 
 ## Créditos
 
