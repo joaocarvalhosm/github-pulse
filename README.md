@@ -135,7 +135,7 @@ make install # installs the zip for your user
   froze 0.1.0 during development.
 - The package contains only the extension files, without tests or scripts,
   as the extensions.gnome.org review requires.
-- How each part works: [docs/COMO-FUNCIONA.md](docs/COMO-FUNCIONA.md) (in
+- How each part works: [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md) (in
   Portuguese).
 
 ## Credits
